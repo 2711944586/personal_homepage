@@ -1,101 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>庄颂的个人主页</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: #4a90e2;
-            color: white;
-            border-radius: 8px;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.2em;
-        }
-        h2 {
-            color: #4a90e2;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-        }
-        .profile-img {
-            max-width: 200px;
-            border-radius: 50%;
-            margin: 15px auto;
-            display: block;
-            border: 5px solid white;
-        }
-        ul, ol {
-            padding-left: 25px;
-        }
-        li {
-            margin: 8px 0;
-        }
-        a {
-            color: #4a90e2;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .section {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <h1>庄颂的个人主页</h1>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="fw-bold">庄颂的主页</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#intro">介绍</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">项目</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">技能</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <div class="section">
-        <h2>基本信息</h2>
-        <img src="D:\文件\头像.jpg" alt="个人照片" class="profile-img">
-        <p><strong>姓名：</strong>庄颂</p>
-        <p><strong>专业：</strong>信息管理与信息系统</p>
-        <p><strong>兴趣爱好：</strong>阅读、编程、运动、钢琴、吉他、唱歌</p>
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-8" id="main-content">
+                <div class="card mb-4 shadow-sm transform-hover">
+                    <div class="card-body" id="intro">
+                        <h1 id="main-title" class="mb-4">我的个人主页</h1>
+                        <h2 class="mb-3">姓名：庄颂</h2>
+                        <h3 class="mb-3">专业：信息管理与信息系统</h3>
+                        
+                        <h2 class="section-title mt-5 mb-3">图片展示</h2>
+                        <div class="img-container">
+                            <img src="D:\文件\头像.jpg" alt="个人照片" class="img-thumbnail mb-4">
+                        </div>
+                        
+                        <h2 class="section-title mt-5 mb-3">个人介绍</h2>
+                        <p class="text-muted">热爱技术与艺术的学习者，喜欢通过编程解决实际问题，同时保持对音乐的热爱。不断探索技术与艺术的结合点，追求高效优雅的解决方案。</p>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm transform-hover" id="projects">
+                    <div class="card-body">
+                        <h2 class="section-title mb-3">项目经历</h2>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item project-item">
+                                <strong>教务系统成绩爬虫程序</strong>：编写gpa_monitor程序，实现了对绩点的实时监控，自动推送成绩变化通知。
+                            </li>
+                            <li class="list-group-item project-item">
+                                <strong>个人博客网站</strong>：独立设计并开发，使用Django框架搭建，支持Markdown编辑与评论功能，用于分享学习心得与技术文章。
+                            </li>
+                            <li class="list-group-item project-item">
+                                <strong>自动抢课程序</strong>：通过获取头文件实现人文选修的自动抢课，提高选课成功率，减少手动操作时间。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 侧边栏 -->
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm transform-hover" id="skills">
+                    <div class="card-body">
+                        <h2 class="section-title mb-3">技能清单</h2>
+                        <ol class="list-group list-group-numbered">
+                            <li class="list-group-item skill-item">HTML：熟练掌握网页结构搭建</li>
+                            <li class="list-group-item skill-item">CSS：能进行页面样式美化</li>
+                            <li class="list-group-item skill-item">较为熟练掌握python，cpp等语言</li>
+                            <li class="list-group-item skill-item">数据库：熟悉mysql等数据库管理系统</li>
+                            <li class="list-group-item skill-item">钢琴十级</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm transform-hover">
+                    <div class="card-body">
+                        <h2 class="section-title mb-3">联系方式</h2>
+                        <p class="mb-3">
+                            <a href="mailto:13561194601@163.com" class="btn btn-primary w-100 transition-all">
+                                邮件联系我
+                            </a>
+                        </p>
+                        <div class="contact-info">
+                            <p class="mb-1"><i class="bi bi-github me-2"></i>GitHub: 2711944586</p>
+                            <p class="mb-0"><i class="bi bi-weixin me-2"></i>微信: zs2711944586</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>项目经历</h2>
-        <ul>
-            <li>教务系统成绩爬虫程序：编写gpa_monitor程序，实现了对绩点的实时监控。</li>
-            <li>个人博客网站：独立设计并开发，用于分享学习心得与技术文章。</li>
-            <li>自动抢课程序：通过获取头文件实现人文选修的自动抢课。</li>
-        </ul>
-    </div>
+    <footer class="bg-light py-3 mt-5">
+        <div class="container text-center text-muted">
+            <p class="mb-0">© 2025 我的个人主页 - 庄颂</p>
+        </div>
+    </footer>
 
-    <div class="section">
-        <h2>技能清单</h2>
-        <ol>
-            <li>HTML：熟练掌握网页结构搭建。</li>
-            <li>CSS：能进行页面样式美化。</li>
-            <li>较为熟练掌握python，cpp等语言</li>
-            <li>数据库：mysql，sqlserver等</li>
-            <li>艺术：钢琴十级，吉他等</li>
-        </ol>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-    <div class="section">
-        <h2>联系方式</h2>
-        <p>邮箱：<a href="mailto:13561194601@163.com">13561194601@163.com</a></p>
-    </div>
+        // 滚动动画
+        window.addEventListener('scroll', () => {
+            const elements = document.querySelectorAll('.transform-hover');
+            elements.forEach(el => {
+                const position = el.getBoundingClientRect();
+                if(position.top < window.innerHeight && position.bottom >= 0) {
+                    el.classList.add('visible');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
