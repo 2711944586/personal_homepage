@@ -2,128 +2,104 @@
 <html lang="zh-CN">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>庄颂的个人主页</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <span class="fw-bold">庄颂的主页</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#intro">介绍</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">项目</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">技能</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="bi bi-person-circle me-2"></i>我的主页</a>
+        <button id="toggle-dark-mode" class="btn btn-outline-light"><i class="bi bi-moon me-1"></i>夜间模式</button>
+    </div>
+</nav>
 
-    <div class="container mt-5 mb-5">
-        <div class="row">
-            <div class="col-md-8" id="main-content">
-                <div class="card mb-4 shadow-sm transform-hover">
-                    <div class="card-body" id="intro">
-                        <h1 id="main-title" class="mb-4">我的个人主页</h1>
-                        <h2 class="mb-3">姓名：庄颂</h2>
-                        <h3 class="mb-3">专业：信息管理与信息系统</h3>
-                        
-                        <h2 class="section-title mt-5 mb-3">图片展示</h2>
-                        <div class="img-container">
-                            <img src="D:\文件\头像.jpg" alt="个人照片" class="img-thumbnail mb-4">
-                        </div>
-                        
-                        <h2 class="section-title mt-5 mb-3">个人介绍</h2>
-                        <p class="text-muted">热爱技术与艺术的学习者，喜欢通过编程解决实际问题，同时保持对音乐的热爱。不断探索技术与艺术的结合点，追求高效优雅的解决方案。</p>
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm transform-hover">
+                <div class="card-body">
+                    <h1 class="mb-4 title-effect">我的个人主页</h1>
+                    <h2 class="mb-2">姓名：庄颂</h2>
+                    <h3 class="mb-4">专业：信息管理与信息系统</h3>
+
+                    <h2 class="section-title">图片展示</h2>
+                    <div class="img-container mb-4">
+                        <img src="D:\文件\头像.jpg" alt="个人照片" class="img-thumbnail">
+                    </div>
+
+                    <h2 class="section-title" id="bio-title">个人简介</h2>
+                    <div id="bio-content">
+                        <p>热爱技术，热爱艺术，热爱生活</p>
+                        <p>信息管理与信息系统专业，擅长将技术应用于实际问题解决</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="card shadow-sm transform-hover" id="projects">
-                    <div class="card-body">
-                        <h2 class="section-title mb-3">项目经历</h2>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item project-item">
-                                <strong>教务系统成绩爬虫程序</strong>：编写gpa_monitor程序，实现了对绩点的实时监控，自动推送成绩变化通知。
-                            </li>
-                            <li class="list-group-item project-item">
-                                <strong>个人博客网站</strong>：独立设计并开发，使用Django框架搭建，支持Markdown编辑与评论功能，用于分享学习心得与技术文章。
-                            </li>
-                            <li class="list-group-item project-item">
-                                <strong>自动抢课程序</strong>：通过获取头文件实现人文选修的自动抢课，提高选课成功率，减少手动操作时间。
-                            </li>
-                        </ul>
+            <div class="card shadow-sm transform-hover">
+                <div class="card-body">
+                    <h2 class="section-title">项目经历</h2>
+                    <ul class="list-group" id="projects-list">
+                        <li class="list-group-item">个人主页开发</li>
+                        <li class="list-group-item">
+                            <strong>教务系统成绩爬虫</strong>：实现绩点监控和成绩通知
+                        </li>
+                        <li class="list-group-item">
+                            <strong>个人博客网站</strong>：Django框架，支持Markdown
+                        </li>
+                        <li class="list-group-item">
+                            <strong>自动抢课程序</strong>：提高人文选修课成功率
+                        </li>
+                    </ul>
+
+                    <div class="mt-3">
+                        <input type="text" id="new-project-input" class="form-control" placeholder="输入新的项目名称">
+                        <button id="add-project-btn" class="btn btn-success mt-2 w-100">添加项目</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 侧边栏 -->
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm transform-hover" id="skills">
-                    <div class="card-body">
-                        <h2 class="section-title mb-3">技能清单</h2>
-                        <ol class="list-group list-group-numbered">
-                            <li class="list-group-item skill-item">HTML：熟练掌握网页结构搭建</li>
-                            <li class="list-group-item skill-item">CSS：能进行页面样式美化</li>
-                            <li class="list-group-item skill-item">较为熟练掌握python，cpp等语言</li>
-                            <li class="list-group-item skill-item">数据库：熟悉mysql等数据库管理系统</li>
-                            <li class="list-group-item skill-item">钢琴十级</li>
-                        </ol>
-                    </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm transform-hover">
+                <div class="card-body">
+                    <h2 class="section-title">技能清单</h2>
+                    <ol class="list-group list-group-numbered" id="skills-list">
+                        <li class="list-group-item">HTML：熟练掌握网页结构</li>
+                        <li class="list-group-item">CSS：页面样式美化</li>
+                        <li class="list-group-item">Python、C++等编程语言</li>
+                        <li class="list-group-item">MySQL等数据库系统</li>
+                        <li class="list-group-item">钢琴十级</li>
+                    </ol>
                 </div>
+            </div>
 
-                <div class="card shadow-sm transform-hover">
-                    <div class="card-body">
-                        <h2 class="section-title mb-3">联系方式</h2>
-                        <p class="mb-3">
-                            <a href="mailto:13561194601@163.com" class="btn btn-primary w-100 transition-all">
-                                邮件联系我
-                            </a>
-                        </p>
-                        <div class="contact-info">
-                            <p class="mb-1"><i class="bi bi-github me-2"></i>GitHub: 2711944586</p>
-                            <p class="mb-0"><i class="bi bi-weixin me-2"></i>微信: zs2711944586</p>
-                        </div>
+            <div class="card shadow-sm transform-hover">
+                <div class="card-body">
+                    <h2 class="section-title">联系方式</h2>
+                    <a href="mailto:13561194601@163.com" class="btn btn-primary w-100 mb-3">
+                        <i class="bi bi-envelope me-1"></i>邮件联系我
+                    </a>
+                    <div class="contact-info">
+                        <p><i class="bi bi-github me-2"></i>GitHub: 2711944586</p>
+                        <p><i class="bi bi-weixin me-2"></i>微信: zs2711944586</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <footer class="bg-light py-3 mt-5">
-        <div class="container text-center text-muted">
-            <p class="mb-0">© 2025 我的个人主页 - 庄颂</p>
-        </div>
-    </footer>
+<footer class="py-3 mt-5">
+    <div class="container text-center text-muted">
+        <p class="mb-0">© 2025 庄颂的个人主页</p>
+    </div>
+</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // 滚动动画
-        window.addEventListener('scroll', () => {
-            const elements = document.querySelectorAll('.transform-hover');
-            elements.forEach(el => {
-                const position = el.getBoundingClientRect();
-                if(position.top < window.innerHeight && position.bottom >= 0) {
-                    el.classList.add('visible');
-                }
-            });
-        });
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
