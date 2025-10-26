@@ -1,0 +1,35 @@
+# Python virtual environment
+venv/
+/venv
+.venv/
+env/
+/env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+
+# Instance folder (can contain secrets)
+instance/
+
+# Database file
+# 对于简单的SQLite项目，是否忽略DB文件有争议，
+# 但在团队协作和生产环境中，忽略数据库是最佳实践。
+*.db
+*.sqlite
+*.sqlite3
+
+# Flask-session files
+.webassets-cache
+flask_session/
+
+# OS generated files
+.DS_Store
+Thumbs.db

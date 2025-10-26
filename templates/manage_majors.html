@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- 添加新专业 -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="bi bi-journal-plus"></i> 添加新专业</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.major_name.label(class="form-label") }}
+                        {{ form.major_name(class="form-control" ~ (" is-invalid" if form.major_name.errors else "")) }}
+                        {% if form.major_name.errors %}
+                            <div class="invalid-feedback">{{ form.major_name.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    {{ form.submit(class="btn btn-primary w-100") }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 专业列表 -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-list-check"></i> 现有专业列表 ({{ majors|length }})</h4>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    {% for major in majors %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ major.major_name }}</strong>
+                            <span class="badge bg-secondary rounded-pill ms-2">{{ major.students.count() }} 人</span>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('edit_major', major_id=major.id) }}" class="btn btn-sm btn-outline-info me-1">
+                                <i class="bi bi-pencil-square"></i> 编辑
+                            </a>
+                            <form action="{{ url_for('delete_major', major_id=major.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('您确定要删除这个专业吗？');">
+                                    <i class="bi bi-trash-fill"></i> 删除
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-center">暂无专业信息，请先添加。</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

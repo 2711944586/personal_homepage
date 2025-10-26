@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h3 class="card-title mb-0"><i class="bi bi-pencil-square"></i> {{ title }}</h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.major_name.label(class="form-label") }}
+                        {{ form.major_name(class="form-control" ~ (" is-invalid" if form.major_name.errors else "")) }}
+                        {% if form.major_name.errors %}
+                            <div class="invalid-feedback">{{ form.major_name.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ url_for('manage_majors') }}" class="btn btn-secondary me-2">
+                            <i class="bi bi-x-circle"></i> 取消
+                        </a>
+                        {{ form.submit(class="btn btn-success") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
