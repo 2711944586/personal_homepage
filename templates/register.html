@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="auth-card p-4 p-md-5">
+            <h2 class="text-center mb-4 fw-bold text-white">{{ title }}</h2>
+            <form method="POST" action="{{ url_for('register') }}" novalidate>
+                {{ form.hidden_tag() }}
+                
+                {{ render_field(form.username, placeholder="3-64位字符") }}
+                {{ render_field(form.password, placeholder="至少6位") }}
+                {{ render_field(form.confirm_password, placeholder="再次输入密码") }}
+
+                <div class="mb-3">
+                    {{ form.captcha.label(class="form-label") }}
+                    <div class="input-group">
+                        {{ form.captcha(class="form-control" + (" is-invalid" if form.captcha.errors else ""), placeholder="4位验证码") }}
+                        <img src="{{ url_for('get_captcha') }}" id="captcha-img" alt="Captcha" 
+                             style="cursor: pointer; border-radius: 0 .375rem .375rem 0;" 
+                             title="点击刷新">
+                    </div>
+                    {% if form.captcha.errors %}
+                        {% for error in form.captcha.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-success btn-lg") }}
+                </div>
+            </form>
+            <hr class="my-4" style="color: white;">
+            <div class="text-center">
+                <p class="mb-0 text-white">已有账户? <a href="{{ url_for('login') }}" class="text-white fw-bold">立即登录</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('captcha-img').onclick = function() {
+        // 通过添加时间戳来强制浏览器重新加载图片，绕过缓存
+        this.src = "{{ url_for('get_captcha') }}?" + new Date().getTime();
+    };
+</script>
+{% endblock %}

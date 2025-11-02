@@ -1,8 +1,8 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 
 {% block content %}
 <div class="row g-4">
-    <!-- 添加新专业 -->
     <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-dark text-white">
@@ -11,20 +11,13 @@
             <div class="card-body">
                 <form method="post" novalidate>
                     {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        {{ form.major_name.label(class="form-label") }}
-                        {{ form.major_name(class="form-control" ~ (" is-invalid" if form.major_name.errors else "")) }}
-                        {% if form.major_name.errors %}
-                            <div class="invalid-feedback">{{ form.major_name.errors[0] }}</div>
-                        {% endif %}
-                    </div>
+                    {{ render_field(form.major_name, placeholder="例如: 人工智能") }}
                     {{ form.submit(class="btn btn-primary w-100") }}
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- 专业列表 -->
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
@@ -51,7 +44,7 @@
                         </div>
                     </li>
                     {% else %}
-                    <li class="list-group-item text-center">暂无专业信息，请先添加。</li>
+                    <li class="list-group-item text-center">暂无专业信息。</li>
                     {% endfor %}
                 </ul>
             </div>
