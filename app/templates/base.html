@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-bs-theme="light"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - 学生信息管理系统 V6</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* (V6 升级) 粒子背景 */
+        #particles-js { 
+            position: fixed; 
+            width: 100%; 
+            height: 100%; 
+            top: 0; 
+            left: 0; 
+            z-index: -10; 
+            background-color: #f8f9fa; /* 浅色背景 */
+        }
+        /* (V6 升级) 浅色 body */
+        body { 
+            background-color: #f8f9fa; 
+            color: #212529; /* 深色文字 */
+        }
+        
+        /* (V6 升级) 卡片使用默认 Bootstrap 5.3 浅色卡片 */
+        .card { 
+            background-color: #ffffff; /* 白色卡片 */
+            border: 1px solid #dee2e6;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05); /* 阴影变浅 */
+            animation: fadeIn 0.5s ease-out; 
+        }
+        
+        /* (V6 升级) 玻璃拟态 - 浅色版 */
+        .auth-card { 
+            background-color: rgba(255, 255, 255, 0.7); /* 白色玻璃 */
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(0, 0, 0, 0.1); 
+            color: #212529; /* 深色文字 */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
+        }
+        .auth-card .form-label { color: #212529; }
+        .auth-card .form-control { 
+            background-color: rgba(0, 0, 0, 0.05); /* 浅灰色输入框 */
+            border: 1px solid rgba(0, 0, 0, 0.1); 
+            color: #212529; 
+        }
+        .auth-card .form-control:focus { 
+            background-color: rgba(0, 0, 0, 0.07); 
+            color: #212529; 
+            box-shadow: none; 
+        }
+        .auth-card .form-control::placeholder { color: rgba(0, 0, 0, 0.4); }
+
+        /* V4 动画 (保留) */
+        .btn, .nav-link, .btn-group > .btn, .list-group-item { transition: all 0.3s ease; }
+        .btn:hover, .btn-group > .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* (V6 升级) 自定义浅色滚动条 */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; } /* 轨道 - 浅灰 */
+        ::-webkit-scrollbar-thumb { background: #cccccc; border-radius: 5px; } /* 滑块 - 中灰 */
+        ::-webkit-scrollbar-thumb:hover { background: #aaaaaa; } /* 悬停 - 深灰 */
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <div id="particles-js"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 sticky-top" style="background-color: rgba(255, 255, 255, 0.8) !important; backdrop-filter: blur(10px);">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}"><i class="bi bi-person-video2"></i> S.M.S V6</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}"><i class="bi bi-speedometer2"></i> 仪表盘</a>
+                    </li>
+                    {% if current_user.is_authenticated and current_user.is_admin() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.manage_majors') }}"><i class="bi bi-journal-bookmark-fill"></i> 专业管理</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> {{ current_user.username }}
+                                {% if current_user.is_admin() %}<span class="badge bg-danger ms-1">Admin</span>{% else %}<span class="badge bg-secondary ms-1">Guest</span>{% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                {% if current_user.is_admin() %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('main.data_tools') }}">
+                                        <i class="bi bi-tools"></i> 数据工具
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('main.audit_log') }}">
+                                        <i class="bi bi-shield-check"></i> 审计日志
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                        <i class="bi bi-box-arrow-right"></i> 登出
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right"></i> 登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.register') }}"><i class="bi bi-person-plus"></i> 注册</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container pb-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="mt-auto text-center text-muted py-3">
+        <small>Student Management System V6 - Light Tech Edition</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#333333" }, /* (V6) 粒子颜色 - 深灰 */
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { 
+                    "enable": true, 
+                    "distance": 150, 
+                    "color": "#555555", /* (V6) 连线颜色 - 中灰 */
+                    "opacity": 0.4, 
+                    "width": 1 
+                },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
+            },
+            "retina_detect": true
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

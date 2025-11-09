@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header"><h4 class="mb-0"><i class="bi bi-pie-chart-fill"></i> 仪表盘: 各专业学生分布</h4></div>
+            <div class="card-body"><div style="height: 350px;"><canvas id="majorDistributionChart"></canvas></div></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+            <h2 class="h4 mb-0">{{ title }} ({{ studs|length }} 人)</h2>
+            {% if current_user.is_authenticated and current_user.is_admin() %}
+                <div class="btn-group">
+                    <a href="{{ url_for('main.new_student') }}" class="btn btn-primary">
+                        <i class="bi bi-person-plus-fill"></i> 添加学生
+                    </a>
+                    <a href="{{ url_for('main.export_csv', q=search_query, major_id=major_id) }}" class="btn btn-success">
+                        <i class="bi bi-download"></i> 导出 CSV
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <form method="GET" action="{{ url_for('main.index') }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="按学号或姓名搜索..." name="q" value="{{ search_query or '' }}">
+                        {% if major_id %}<input type="hidden" name="major_id" value="{{ major_id }}">{% endif %}
+                        <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group w-100">
+                    <a href="{{ url_for('main.index', q=search_query) }}" class="btn {% if not major_id %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                       <i class="bi bi-list-ul"></i> 全部学生
+                    </a>
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu w-100">
+                        {% for m in majors %}
+                        <li>
+                            <a class="dropdown-item {% if m.id == major_id %}active{% endif %}" 
+                               href="{{ url_for('main.index', major_id=m.id, q=search_query) }}">
+                               {{ m.major_name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light"> <tr>
+                        <th scope="col">学号</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">专业</th>
+                        <th scope="col" class="text-end">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stud in studs %}
+                    <tr>
+                        <td>{{ stud.student_id }}</td>
+                        <td>{{ stud.student_name }}</td>
+                        <td>
+                            {% if stud.major %}<span class="badge bg-primary bg-opacity-75">{{ stud.major.major_name }}</span>
+                            {% else %}<span class="badge bg-secondary">未分配</span>{% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{{ url_for('main.view_profile', student_id=stud.student_id) }}" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-person-lines-fill"></i> 查看
+                            </a>
+                            
+                            {% if current_user.is_authenticated and current_user.is_admin() %}
+                                <a href="{{ url_for('main.edit_student', stu_id=stud.student_id) }}" class="btn btn-sm btn-outline-info me-1">
+                                    <i class="bi bi-pencil-square"></i> 编辑
+                                </a>
+                                <form action="{{ url_for('main.delete_student', stu_id=stud.student_id) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                            onclick="return confirm('您确定要删除这位学生吗？');">
+                                        <i class="bi bi-trash-fill"></i> 删除
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="text-center py-4">未找到匹配的学生记录。</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('{{ url_for("main.dashboard_data") }}')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('majorDistributionChart').getContext('2d');
+                const chartColors = ['#0d6efd', '#6f42c1', '#198754', '#d62728', '#fd7e14', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
+                const chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{ 
+                            label: '学生人数', 
+                            data: data.data, 
+                            backgroundColor: chartColors, 
+                            borderColor: '#ffffff', /* (V6 升级) 浅色边框 */ 
+                            borderWidth: 2 
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { 
+                                position: 'right', 
+                                labels: { 
+                                    color: '#333333' /* (V6 升级) 深色图例文字 */ 
+                                } 
+                            } 
+                        } 
+                    }
+                });
+            });
+    });
+</script>
+{% endblock %}

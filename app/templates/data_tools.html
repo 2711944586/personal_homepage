@@ -12,9 +12,8 @@
                 <p>请上传一个 CSV 文件。文件**不需要表头**，且每行必须严格按照以下三列顺序：</p>
                 <p><code>学号, 姓名, 专业全称</code></p>
                 <hr>
-                <form method="POST" enctype="multipart/form-data" novalidate>
-                    {{ form.hidden_tag() }}
-                    {{ render_field(form.csv_file) }}
+                <form method="POST" action="{{ url_for('main.data_tools') }}" enctype="multipart/form-data" novalidate>
+                    {{ form.hidden_tag() }} {{ render_field(form.csv_file) }}
                     {{ form.submit(class="btn btn-primary w-100") }}
                 </form>
             </div>
@@ -29,7 +28,7 @@
                 <p>点击下方按钮，将**所有**学生数据导出为 CSV 文件。</p>
                 <p>（提示：您也可以在首页使用搜索或筛选后，点击那里的“导出”按钮来导出部分数据。）</p>
                 <hr>
-                <a href="{{ url_for('export_csv') }}" class="btn btn-success w-100">
+                <a href="{{ url_for('main.export_csv') }}" class="btn btn-success w-100">
                     <i class="bi bi-file-earmark-spreadsheet-fill"></i> 导出所有学生
                 </a>
             </div>

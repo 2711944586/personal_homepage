@@ -6,11 +6,9 @@
     <div class="col-md-6 col-lg-5">
         <div class="auth-card p-4 p-md-5">
             <h2 class="text-center mb-4 fw-bold text-white">{{ title }}</h2>
-            <form method="POST" action="{{ url_for('login') }}" novalidate>
-                {{ form.hidden_tag() }}
-                
-                {{ render_field(form.username, placeholder="输入用户名") }}
-                {{ render_field(form.password, placeholder="输入密码") }}
+            <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+                {{ form.hidden_tag() }} {{ render_field(form.username, placeholder="输入用户名 (admin 或 guest)") }}
+                {{ render_field(form.password, placeholder="输入密码 (123456)") }}
 
                 <div class="mb-3 form-check">
                     {{ form.remember_me(class="form-check-input") }}
@@ -23,7 +21,7 @@
             </form>
             <hr class="my-4" style="color: white;">
             <div class="text-center">
-                <p class="mb-0 text-white">还没有账户? <a href="{{ url_for('register') }}" class="text-white fw-bold">立即注册</a></p>
+                <p class="mb-0 text-white">还没有账户? <a href="{{ url_for('auth.register') }}" class="text-white fw-bold">立即注册</a></p>
             </div>
         </div>
     </div>

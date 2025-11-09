@@ -9,9 +9,8 @@
                 <h4 class="mb-0"><i class="bi bi-journal-plus"></i> 添加新专业</h4>
             </div>
             <div class="card-body">
-                <form method="post" novalidate>
-                    {{ form.hidden_tag() }}
-                    {{ render_field(form.major_name, placeholder="例如: 人工智能") }}
+                <form method="post" action="{{ url_for('main.manage_majors') }}" novalidate>
+                    {{ form.hidden_tag() }} {{ render_field(form.major_name, placeholder="例如: 人工智能") }}
                     {{ form.submit(class="btn btn-primary w-100") }}
                 </form>
             </div>
@@ -32,10 +31,11 @@
                             <span class="badge bg-secondary rounded-pill ms-2">{{ major.students.count() }} 人</span>
                         </div>
                         <div>
-                            <a href="{{ url_for('edit_major', major_id=major.id) }}" class="btn btn-sm btn-outline-info me-1">
+                            <a href="{{ url_for('main.edit_major', major_id=major.id) }}" class="btn btn-sm btn-outline-info me-1">
                                 <i class="bi bi-pencil-square"></i> 编辑
                             </a>
-                            <form action="{{ url_for('delete_major', major_id=major.id) }}" method="post" class="d-inline">
+                            <form action="{{ url_for('main.delete_major', major_id=major.id) }}" method="post" class="d-inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <button type="submit" class="btn btn-sm btn-outline-danger"
                                         onclick="return confirm('您确定要删除这个专业吗？');">
                                     <i class="bi bi-trash-fill"></i> 删除

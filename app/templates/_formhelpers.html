@@ -1,7 +1,7 @@
 {% macro render_field(field, placeholder=None) %}
     <div class="mb-3">
         {{ field.label(class="form-label") }}
-        {{ field(class="form-control" + (" is-invalid" if field.errors else ""), placeholder=placeholder, **kwargs) }}
+        {{ field(class="form-control" + (" is-invalid" if field.errors else ""), placeholder=placeholder or field.label.text, **kwargs) }}
         {% if field.errors %}
             {% for error in field.errors %}
                 <div class="invalid-feedback">
